@@ -26,8 +26,10 @@ int fetch(const string &var) {
 }
 
 string read_op(const string &a,int l,int r) {
-    if(a[l] == '=' && l < r) return a.substr(l,2);
-    return a.substr(l,1);
+    if(l < r && a.substr(l,2) == "==") return a.substr(l,2);
+    else if(l < r && a.substr(l,2) == "<=") return a.substr(l,2);
+    else if(l < r && a.substr(l,2) == ">=") return a.substr(l,2);
+    else return a.substr(l,1);
 }
 
 string read_var(const string &a,int l,int r) {
@@ -85,7 +87,10 @@ int eval_op(const string &op,int e1,int e2) {
     else if(op == "+") return e1+e2;
     else if(op == "-") return e1-e2;
     else if(op == "/") return e1/e2;
+    else if(op == "%") return e1%e2;
     else if(op == "<") return e1 < e2;
+    else if(op == "<=") return e1 <= e2;
+    else if(op == ">=") return e1 >= e2;
     else if(op == "==") return e1 == e2;
     else if(op == ">") return e1 > e2;
     else cerr << "Unknown operator: " << op << endl;

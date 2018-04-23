@@ -1,15 +1,1 @@
-l = 0;
-r = 10000;
-while(l < r) {
-    m = (l+r+1)/2;
-    if((m*m) > 2345456) {
-        r = m-1;
-    };
-    if((m*m) == 2345456) {
-        l = m;
-    };
-    if((m*m) < 2345456) {
-        l = m;
-    };
-};
-print(l);
+l=0;r=10000;val=100;while(l<r){print(l,r);m=(l+r+1)/2;if((m*m)>val){r=m-1;};if((m*m)<=val){l=m;};};print(l);
