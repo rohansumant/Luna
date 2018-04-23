@@ -1,3 +1,5 @@
+#ifndef COMMON_CPP
+#define COMMON_CPP
 #include <string>
 using namespace std;
 
@@ -46,3 +48,4 @@ vector<string> split(const string &a,int l,int r,char ch) {
     }
     return ls;
 }
+#endif

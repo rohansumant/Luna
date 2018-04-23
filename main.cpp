@@ -1,15 +1,13 @@
 #include <iostream>
 #include <string>
-#include "exp.cpp"
+#include "stmt.cpp"
 using namespace std;
 
-vector<map<string,int>> stack = {{{"aa",3}}};
+vector<pair<string,map<string,int>>> stack;
 
 int main() {
-    string exp;
-    cin >> exp;
-    while(!cin.eof()) {
-        cout << parse_exp(exp,0,exp.size()-1) << endl;
-        cin >> exp;
-    }
+    stack.push_back({"main",{}});
+    string block;
+    cin >> block;
+    parse_block(block,0,block.size()-1,"fn");
 }

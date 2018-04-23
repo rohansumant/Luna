@@ -1,3 +1,5 @@
+#ifndef EXP_CPP
+#define EXP_CPP
 #include <string>
 #include <cassert>
 #include <vector>
@@ -5,7 +7,7 @@
 #include "common.cpp"
 using namespace std;
 
-extern vector<map<string,int>> stack;
+extern vector<pair<string,map<string,int>>> stack;
 
 int parse_exp(const string&,int,int);
 
@@ -14,8 +16,10 @@ int eval_fn(string,vector<int> a) {return 0;}
 
 int fetch(const string &var) {
     for(int i=stack.size()-1;i>=0;i--) {
-        auto it = stack[i].find(var);
-        if(it != stack[i].end()) return it->second;
+        bool end_of_frame = stack[i].first == "fn";
+        auto it = stack[i].second.find(var);
+        if(it != stack[i].second.end()) return it->second;
+        if(end_of_frame) break;
     }
     cerr << "No such variable found: " << var << endl;
     return -1;
@@ -118,3 +122,4 @@ int parse_exp(const string &a,int l,int r) {
     string op = read_op(a,ix,r);
     return eval_op(op,e1,parse_exp(a,ix+op.length(),r));
 }
+#endif
