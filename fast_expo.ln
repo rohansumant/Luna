@@ -1,0 +1,20 @@
+@pow(a,b,mod) {
+    if(b == 0) {
+        return(1);
+    };
+    ans = pow(a,b/2,mod) % mod;
+    ans = (ans*ans) % mod;
+    if((b%2) == 0) {
+        return(ans);
+    };
+    return((a*ans)%mod);
+}
+
+@main() {
+    ans = pow(34,12,10000);
+    print(ans);
+    return(0);
+}
+
+main()
+

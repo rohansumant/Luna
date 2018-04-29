@@ -1,0 +1,17 @@
+@factorial(a) {
+    if(a == 0) {
+        return(1);
+    };
+    return(a*factorial(a-1));
+}
+
+@main() {
+    i = 1;
+    while(i <= 10) {
+        print(factorial(i));
+        i = i+1;
+    };
+    return(0);
+}
+
+main()

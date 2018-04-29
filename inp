@@ -1,1 +1,1 @@
-l=0;r=10000;val=100;while(l<r){print(l,r);m=(l+r+1)/2;if((m*m)>val){r=m-1;};if((m*m)<=val){l=m;};};print(l);
+@pow(a,b,mod){if(b==0){return(1);};ans=pow(a,b/2,mod)%mod;ans=(ans*ans)%mod;if((b%2)==0){return(ans);};return((a*ans)%mod);}@main(){ans=pow(34,12,10000);print(ans);return(0);}main()

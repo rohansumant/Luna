@@ -8,11 +8,40 @@
 using namespace std;
 
 extern vector<pair<string,map<string,int>>> stack;
+extern map<string,pair<vector<string>,string>> func_map;
 
 int parse_exp(const string&,int,int);
+int parse_block(const string&,int,int,string,bool&,map<string,int>);
 
-int read_fn_call_length(const string &a,int l,int r) {return 0;}
-int eval_fn(string,vector<int> a) {return 0;} 
+int read_fn_call_length(const string &a,int l,int r) {
+    int i = l;
+    while(i <= r && isalpha(a[i])) i++;
+    assert(i <= r && a[i] == '(');
+    int ix = get_matching_paranthesis(a,i,r);
+    return ix-l+1;
+}
+
+int eval_fn(string name,vector<int> args) {
+    auto it = func_map.find(name);
+    if(it == func_map.end()) {
+        cerr << "Function: " << name << " not defined" << endl;
+        return -1;
+    }
+    vector<string> var_args = it->second.first;
+    string body = it->second.second;
+    if(var_args.size() != args.size()) {
+        cerr << "Argument count mismatch for function " << name << endl;
+        return -1;
+    }
+    map<string,int> arg_ls;
+    for(int i=0;i<args.size();i++) {
+        arg_ls[var_args[i]] = args[i];
+    }
+    bool hit_return = 0;
+    int val = parse_block(body,0,body.size()-1,"fn",hit_return,arg_ls);
+    assert(hit_return);
+    return val;
+}
 
 int fetch(const string &var) {
     for(int i=stack.size()-1;i>=0;i--) {
@@ -51,6 +80,25 @@ bool read_maybe_fn_call(const string &a,int l,int r) {
     return a[i] == '(';
 }
 
+vector<string> read_fn_args_noneval(const string &a,int l,int r) {
+    int p_cnt = 0;
+    int i = l, base = l;
+    vector<string> args;
+    while(i <= r) {
+        if(a[i] == '(') p_cnt++;
+        else if(a[i] == ')') p_cnt--;
+        else if(a[i] == ',' && !p_cnt) {
+            args.push_back(a.substr(base,i-base));
+            base = i+1;
+        }
+        i++;
+    }
+    if(r >= base) args.push_back(a.substr(base,r-base+1));
+    return args;
+}
+
+
+
 vector<int> read_fn_args(const string &a,int l,int r) {
     int p_cnt = 0;
     int i = l, base = l;
@@ -68,12 +116,27 @@ vector<int> read_fn_args(const string &a,int l,int r) {
     return args;
 }
 
+
+pair<string,vector<string>> read_fn_call_noneval(const string &a,int l,int r) {
+    string name;
+    int i = l;
+    for(;i <= r && isalpha(a[i]);i++) name += a[i];
+    assert(a[i] == '(');
+    int ix = get_matching_paranthesis(a,i,r);
+    assert(ix <= r);
+    vector<string> args;
+    if(ix == i+1) return {name,args};
+    args = read_fn_args_noneval(a,i+1,ix-1);
+    return {name,args};
+}
+
+
 pair<string,vector<int>> read_fn_call(const string &a,int l,int r) {
     string name;
     int i = l;
     for(;i <= r && isalpha(a[i]);i++) name += a[i];
     assert(a[i] == '(');
-    int ix = get_matching_paranthesis(a,l,r);
+    int ix = get_matching_paranthesis(a,i,r);
     assert(ix <= r);
     vector<int> args;
     if(ix == i+1) return {name,args};

@@ -25,16 +25,14 @@ vector<string> read_stmts(const string &a,int l,int r) {
     return stmts;
 }
 
-int parse_block(const string &a,int l,int r,string type) {
+int parse_block(const string &a,int l,int r,string type,bool &hit_return,map<string,int> args = {}) {
     map<string,int> new_frame;
+    if(args.size()) new_frame = args;
     stack.push_back({type,new_frame});
     vector<string> stmts = read_stmts(a,l,r); 
     for(string stmt:stmts) {
-        bool hit_return = 0;
         int val = parse_stmt(stmt,0,stmt.size()-1,hit_return);
         if(hit_return) {
-            int ix = stack.size()-1;
-            while(ix >= 0 && stack[ix].first != "fn") stack.pop_back();
             stack.pop_back();
             return val;
         }
@@ -59,7 +57,8 @@ int parse_stmt(const string &a,int l,int r,bool &hit_return) {
             int b1 = p2+1;
             assert(a[b1] == '{');
             int b2 = get_matching_brace(a,b1,r);
-            parse_block(a,b1+1,b2-1,"if");
+            int val = parse_block(a,b1+1,b2-1,"if",hit_return);
+            if(hit_return) return val;
         }
     } else if(len >= 6 && a.substr(l,6) == "while(") {
         int p1 = l+5;
@@ -69,7 +68,8 @@ int parse_stmt(const string &a,int l,int r,bool &hit_return) {
             int b1 = p2+1;
             assert(a[b1] == '{');
             int b2 = get_matching_brace(a,b1,r);
-            parse_block(a,b1+1,b2-1,"while");
+            int val = parse_block(a,b1+1,b2-1,"while",hit_return);
+            if(hit_return) return val;
         }
     } else if(len >= 7 && a.substr(l,7) == "return(") {
         int p1 = l+6;

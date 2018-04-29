@@ -1,14 +1,21 @@
-l = 0;
-r = 10000;
-val = 100;
-while(l < r) {
-    print(l,r);
-    m = (l+r+1)/2;
-    if((m*m) > val) {
-        r = m-1;
+@sqrt(val) {
+    l = 0;
+    r = val;
+    while(l < r) {
+        m = (l+r+1)/2;
+        if((m*m) > val) {
+            r = m-1;
+        };
+        if((m*m) <= val) {
+            l = m;
+        };
     };
-    if((m*m) <= val) {
-        l = m;
-    };
-};
-print(l);
+    return(l);
+}
+
+@main() {
+    print(sqrt(100));
+    return(0);
+}
+
+main()
