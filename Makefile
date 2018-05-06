@@ -1,5 +1,5 @@
 main: main.cpp
-	g++ -g -std=c++14 -o main main.cpp -I.
+	g++-7 -g -std=c++17 -o main main.cpp -I.
 
 clean:
 	-rm main
