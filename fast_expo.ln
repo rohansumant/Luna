@@ -11,7 +11,7 @@
 }
 
 @main() {
-    ans = pow(34,12,10000);
+    ans = pow(34,122,10000);
     print(ans);
     return(0);
 }

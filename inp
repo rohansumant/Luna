@@ -1,1 +1,1 @@
-@pow(a,b,mod){if(b==0){return(1);};ans=pow(a,b/2,mod)%mod;ans=(ans*ans)%mod;if((b%2)==0){return(ans);};return((a*ans)%mod);}@main(){ans=pow(34,12,10000);print(ans);return(0);}main()
+@sqrt(val){l=0;r=val+1;while(l<(r-1)){m=(l+r)/2;if((m*m)>val){r=m;};if((m*m)<=val){l=m;};};return(l);}@main(){i=1;while(i<=100){j=sqrt(i);if((j*j)==i){print(i);};i=i+1;};return(0);}main()

@@ -6,7 +6,7 @@
 }
 
 @main() {
-    print(gcd(432,608));
+    print(gcd(41372,69708));
     return(0);
 }
 

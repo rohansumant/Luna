@@ -1,10 +1,10 @@
 @sqrt(val) {
     l = 0;
-    r = val;
-    while(l < r) {
-        m = (l+r+1)/2;
+    r = val+1;
+    while(l < (r-1)) {
+        m = (l+r)/2;
         if((m*m) > val) {
-            r = m-1;
+            r = m;
         };
         if((m*m) <= val) {
             l = m;
@@ -14,7 +14,14 @@
 }
 
 @main() {
-    print(sqrt(100));
+    i = 1;
+    while(i <= 100) {
+        j = sqrt(i);
+        if((j*j) == i) {
+            print(i);
+        };
+        i = i+1;
+    };
     return(0);
 }
 
